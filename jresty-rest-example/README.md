@@ -24,6 +24,10 @@
 	curl http://localhost:8080/jresty/ping.xml -i
 	curl http://localhost:8080/jresty/ping.html -i
 	curl http://localhost:8080/jresty/ping.jsp -i
+	
+	# redirect support for .html|.jsp
+	http://localhost:8080/jresty/ping.jsp?redirect=http://www.baidu.com
+	http://localhost:8080/jresty/ping.html?redirect=http://www.baidu.com
 
 ## two URLs for one method
 	
