@@ -17,16 +17,16 @@
 
 ## how to run
 
-- run in eclipse
+- **run in eclipse**
 
 	org.example.jresty.runner.JettyEmbedRunner
 	
-- run with maven
+- **run with maven**
 	
-	# in rd env (development environment)
+	// in rd env (development environment)
 	mvn -Djetty.port=8080 jetty:run -Dmaven.test.skip=true -Prd
 	
-	# in op env (production environment)
+	// in op env (production environment)
 	mvn -Djetty.port=8080 jetty:run -Pop
 	
 	
