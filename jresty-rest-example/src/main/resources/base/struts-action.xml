@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+    "http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+	<package name="jresty-default" extends="struts-default"
+		namespace="/jresty">
+		
+		<interceptors>
+			<interceptor name="anti-remote-command-method"
+				class="io.downgoon.jresty.rest.struts2.interceptor.AntiRemoteCommandMethodInterceptor" />
+			<interceptor name="crossDomainInterceptor" 
+							class="io.downgoon.jresty.rest.struts2.interceptor.CrossDomainInterceptor" />	
+				
+			<interceptor-stack name="anti-remote-command-execution">
+				<interceptor-ref name="defaultStack">
+					<param name="params.excludeParams">dojo\..*,^struts\..*,.*\\.*,.*\(.*,.*\).*,.*@.*,ClientCharset,redirectDynamic</param>
+				</interceptor-ref>
+				<interceptor-ref name="anti-remote-command-method">
+					<param name="includeMethods">equals,getClass,hashCode,notify,notifyAll,toString,wait</param>
+					<param name="excludeMethods"></param>
+				</interceptor-ref>
+				<interceptor-ref name="crossDomainInterceptor" />
+			</interceptor-stack>
+		</interceptors>
+		
+		<default-interceptor-ref name="anti-remote-command-execution" />
+
+		<global-results>
+			<result name="restExceptionResult" type="chain">restExceptionHandler</result>
+			<result name="framExceptionResult">/WEB-INF/rest/fram500.jsp</result>	
+			<result name="exception.jsp">/WEB-INF/rest/fram500.jsp</result>
+            
+            <result name="error.jsp">/WEB-INF/rest/rest500.jsp</result>
+            <result name="error">/WEB-INF/rest/rest500.jsp</result>
+            
+            <result name="prompt.jsp">/WEB-INF/rest/prompt.jsp</result>
+            <result name="prompt">/WEB-INF/rest/prompt.jsp</result>
+            <result name="nohtml.jsp">/WEB-INF/rest/nohtml.jsp</result>
+            <result name="nohtml">/WEB-INF/rest/nohtml.jsp</result>
+            
+            <result name="nologin.jsp" type="redirect">http://www.example.com/playground.htm</result>
+            <result name="nologin" type="redirect">http://www.example.com/playground.htm</result>
+            <result name="index.jsp" type="redirect">http://www.example.com/playground.htm</result>
+            <result name="index" type="redirect">http://www.example.com/playground.htm</result>
+            
+        </global-results>
+        
+		<global-exception-mappings>
+			<!-- 
+			<exception-mapping exception="java.lang.Exception" result="framExceptionResult"/>
+			 -->
+			 <exception-mapping exception="java.lang.Exception" result="restExceptionResult"/>
+			<exception-mapping exception="java.lang.RuntimeException" result="restExceptionResult"/>
+        </global-exception-mappings>
+        
+	 	<action name="restExceptionHandler" class="restExceptionHandlerAction" method="handleException">
+			<result name="xml">/WEB-INF/rest/rest500.xml</result>
+			<result name="json">/WEB-INF/rest/rest500.json</result>
+			<result name="jsonp">/WEB-INF/rest/rest500.js</result>
+   			<result name="html">/WEB-INF/rest/rest500.jsp</result>
+   			<result name="jsp">/WEB-INF/rest/rest500.jsp</result>
+		</action>
+
+
+		<!-- user definition -->
+		
+		<action name="ping" class="pingAction">
+			<interceptor-ref name="anti-remote-command-execution" />
+			<result name="index">/WEB-INF/jsp/ping-index.jsp</result>
+		</action>
+
+
+	</package>
+
+</struts>
