@@ -35,19 +35,33 @@ public class RestResultsHandler implements RestResults {
 	}
 	
 	@Override
-	public final String REST(String methodResult,Object responseMessageOverwrite){
-		return intercepteBetweenActionAndResult(methodResult,responseMessageOverwrite);
-	}
-	
-	@Override
 	public final String REST(HttpHeaders methodResult){
 		return intercepteBetweenActionAndResult(methodResult,null);
 	}
 	
+	
 	@Override
-	public final String REST(HttpHeaders methodResult,Object responseMessageOverwrite){
+	public final String REST(String methodResult,Object responseMessageOverwrite){
+		if (responseMessageOverwrite != null && isPrimitiveType(responseMessageOverwrite)) {
+			return intercepteBetweenActionAndResult(methodResult,null); // 不支持简单对象
+		}
 		return intercepteBetweenActionAndResult(methodResult,responseMessageOverwrite);
 	}
+	
+	private static boolean isPrimitiveType(Object obj) {
+		return obj instanceof Boolean 
+				|| obj instanceof String 
+				|| obj instanceof Integer;
+	} 
+	
+	@Override
+	public final String REST(HttpHeaders methodResult,Object responseMessageOverwrite){
+		if (responseMessageOverwrite != null && isPrimitiveType(responseMessageOverwrite)) {
+			return intercepteBetweenActionAndResult(methodResult,null); // 不支持简单对象
+		}
+		return intercepteBetweenActionAndResult(methodResult,responseMessageOverwrite);
+	}
+
 
 	/** 在Action和Result之间执行的逻辑
 	 * @param	responseMessageOverwrite	响应报文
