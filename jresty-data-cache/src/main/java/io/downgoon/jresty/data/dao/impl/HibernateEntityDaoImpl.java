@@ -242,4 +242,62 @@ public class HibernateEntityDaoImpl<E extends IEntity<PK>, PK extends Serializab
 		}
 		return new LinkedList<PK>(list);
 	}
+	
+	@Override
+	public List<Object> execHQLList(final String hql, final Object[] params, final int maxResults) {
+		final long tb = System.currentTimeMillis();
+		HibernateCallback<List<Object>> callback = new HibernateCallback<List<Object>>() {
+			public List<Object> doInHibernate(Session session) {
+				Query query = session.createQuery(hql);
+				int k = 0;
+				for (int i = 0; params != null && i < params.length; i++) {
+					query.setParameter(k++, params[i]);
+				}
+				if (maxResults > -1) {
+					query.setMaxResults(maxResults);
+				}
+				return query.list();
+			}
+		};
+		List<Object> list = getHibernateTemplate().execute(callback);
+		if (log.isDebugEnabled()) {
+			Object[] logValue = new Object[] { hql, params, maxResults, list.size() };
+			log.debug("getHQLList - hql:{}, params:{}, maxResults:{}, list.len:{}", logValue);
+		}
+		final long te = System.currentTimeMillis();
+		if (te - tb > TIMEOUT) {
+			final Object[] logValue = new Object[] { te - tb, hql, params, maxResults };
+			log.warn("batchUpdate - Time:{} sql:{} params:{} maxResults:{}", logValue);
+		}
+		return new LinkedList<Object>(list);
+	}
+
+	@Override
+	public List<Object> execHQLList(final String hql, final Object[] params, final int start, final int size) {
+		final long tb = System.currentTimeMillis();
+		HibernateCallback<List<Object>> callback = new HibernateCallback<List<Object>>() {
+			public List<Object> doInHibernate(Session session) {
+				Query query = session.createQuery(hql);
+				int k = 0;
+				for (int i = 0; params != null && i < params.length; i++) {
+					query.setParameter(k++, params[i]);
+				}
+				query.setFirstResult(start);
+				query.setMaxResults(size);
+				return query.list();
+			}
+		};
+		List<Object> list = getHibernateTemplate().execute(callback);
+		if (log.isDebugEnabled()) {
+			Object[] logValue = new Object[] { hql, params, start, size, list.size() };
+			log.debug("getHQLList - hql:{}, params:{}, start:{}, size:{}, list.len:{}", logValue);
+		}
+		final long te = System.currentTimeMillis();
+		if (te - tb > TIMEOUT) {
+			final Object[] logValue = new Object[] { te - tb, hql, params, start, size };
+			log.warn("batchUpdate - Time:{} sql:{} params:{} start:{} size:{}", logValue);
+		}
+		return new LinkedList<Object>(list);
+	}
+	
 }

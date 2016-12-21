@@ -31,5 +31,9 @@ public interface IEntityDao<E extends IEntity<PK>, PK extends Serializable> {
 	List<PK> getHQLList(String hql, Object[] params, int maxResults);
 
 	List<PK> getHQLList(String hql, Object[] params, int start, int size);
+	
+	List<Object> execHQLList(String hql, Object[] params, int maxResults);
+
+	List<Object> execHQLList(String hql, Object[] params, int start, int size);
 
 }
