@@ -1,6 +1,6 @@
-package io.downgoon.jresty.commons.security;
+package io.downgoon.jresty.commons.security000;
 
-import io.downgoon.jresty.commons.security.Coder.ByteEncodeWay;
+import io.downgoon.jresty.commons.security000.Coder.ByteEncodeWay;
 
 public interface IRSACoder extends IRSACoderPublic {
 
@@ -9,7 +9,7 @@ public interface IRSACoder extends IRSACoderPublic {
 	 * 私钥解密方法
 	 * @param	cipherBytes	密文字节数组
 	 * @return	明文字节数组
-	 * 如果需要把明文字节数组，编码成字符串，可以选择  {@link io.downgoon.jresty.commons.security.IRSACoder#decryptByPrivate(byte[], ByteEncodeWay)}
+	 * 如果需要把明文字节数组，编码成字符串，可以选择  {@link io.downgoon.jresty.commons.security000.IRSACoder#decryptByPrivate(byte[], ByteEncodeWay)}
 	 */
 	public abstract byte[] decryptByPrivate(byte[] cipherBytes)
 			throws Exception;

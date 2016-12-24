@@ -1,6 +1,6 @@
-package io.downgoon.jresty.commons.security;
+package io.downgoon.jresty.commons.security000;
 
-import io.downgoon.jresty.commons.security.Coder.ByteEncodeWay;
+import io.downgoon.jresty.commons.security000.Coder.ByteEncodeWay;
 
 public interface IRSACoderPublic {
 

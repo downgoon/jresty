@@ -1,43 +1,10 @@
 package io.downgoon.jresty.commons.security;
 
-public class XXTEA {
-	/**
-	 * 先XXXTEA加密，后Base64加密
-	 */
-	public static String encrypt(String str,String key) {
-		String enVid = "";
-		byte[] k = key.getBytes();
-		byte[] v = str.getBytes();
-		enVid = new String(Base64.encode(XXTEA.encrypt(v, k)));
-		enVid = enVid.replace('+', '-');
-		enVid = enVid.replace('/', '_');
-		enVid = enVid.replace('=', '.');
-		return enVid;
-	}
+/**
+ * XXTEA 加密/解密
+ * */
+public class XXTEACodec {
 
-	/**
-	 * 先Base64解密，后XXXTEA解密
-	 */
-	public static String decrypt(String str,String key) {
-		if(str==null){
-			return null;
-		}
-		String deVid = "";
-		str = str.replace('-', '+');
-		str = str.replace('_', '/');
-		str = str.replace('.', '=');
-		byte[] k = key.getBytes();
-		byte[] v = Base64.decode(str);
-		deVid = new String(XXTEA.decrypt(v, k));
-		return deVid;
-	}
-
-	/**
-	 * Encrypt data with key.
-	 * 
-	 * @param data
-	 * @param key
-	 */
 	public static byte[] encrypt(byte[] data, byte[] key) {
 		if (data.length == 0) {
 			return data;
@@ -45,12 +12,6 @@ public class XXTEA {
 		return toByteArray(encrypt(toIntArray(data, true), toIntArray(key, false)), false);
 	}
 
-	/**
-	 * Decrypt data with key.
-	 * 
-	 * @param data
-	 * @param key
-	 */
 	public static byte[] decrypt(byte[] data, byte[] key) {
 		if (data.length == 0) {
 			return data;
@@ -58,12 +19,7 @@ public class XXTEA {
 		return toByteArray(decrypt(toIntArray(data, false), toIntArray(key, false)), true);
 	}
 
-	/**
-	 * Encrypt data with key.
-	 * 
-	 * @param v
-	 * @param k
-	 */
+	
 	public static int[] encrypt(int[] v, int[] k) {
 		int n = v.length - 1;
 
@@ -92,12 +48,6 @@ public class XXTEA {
 		return v;
 	}
 
-	/**
-	 * Decrypt data with key.
-	 * 
-	 * @param v
-	 * @param k
-	 */
 	public static int[] decrypt(int[] v, int[] k) {
 		int n = v.length - 1;
 
@@ -127,13 +77,6 @@ public class XXTEA {
 		return v;
 	}
 
-	/**
-	 * Convert byte array to int array.
-	 * 
-	 * @param data
-	 * @param includeLength
-	 * @return
-	 */
 	private static int[] toIntArray(byte[] data, boolean includeLength) {
 		int n = (((data.length & 3) == 0) ? (data.length >>> 2) : ((data.length >>> 2) + 1));
 		int[] result;
@@ -151,13 +94,6 @@ public class XXTEA {
 		return result;
 	}
 
-	/**
-	 * Convert int array to byte array.
-	 * 
-	 * @param data
-	 * @param includeLength
-	 * @return
-	 */
 	private static byte[] toByteArray(int[] data, boolean includeLength) {
 		int n = data.length << 2;
 		if (includeLength) {
@@ -176,4 +112,5 @@ public class XXTEA {
 		}
 		return result;
 	}
+
 }

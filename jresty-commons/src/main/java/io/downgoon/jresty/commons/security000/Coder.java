@@ -1,4 +1,4 @@
-package io.downgoon.jresty.commons.security;
+package io.downgoon.jresty.commons.security000;
 
 import java.security.MessageDigest;
 

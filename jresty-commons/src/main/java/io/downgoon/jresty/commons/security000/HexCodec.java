@@ -1,4 +1,4 @@
-package io.downgoon.jresty.commons.security;
+package io.downgoon.jresty.commons.security000;
 
 //import org.apache.commons.codec.DecoderException;
 //import org.apache.commons.codec.binary.Hex;

@@ -1,4 +1,4 @@
-package io.downgoon.jresty.commons.security;
+package io.downgoon.jresty.commons.security000;
 
 import java.math.BigInteger;
 import java.security.KeyFactory;
@@ -112,7 +112,7 @@ public  class RSACoder extends RSACoderPublic implements IRSACoder {
 			return bytes2hexs(cipherTextBytes);
 		}
 	}
-	/** {@link io.downgoon.jresty.commons.security.RSACoder#signByPrivate(byte[], ByteEncodeWay)} 的别名 */
+	/** {@link io.downgoon.jresty.commons.security000.RSACoder#signByPrivate(byte[], ByteEncodeWay)} 的别名 */
 	public String encryptByPrivate(byte[] plainBytes,ByteEncodeWay encodeWay) throws Exception {
 		return signByPrivate(plainBytes,encodeWay);
 	}

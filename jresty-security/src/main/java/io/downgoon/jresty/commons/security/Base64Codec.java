@@ -2,7 +2,11 @@ package io.downgoon.jresty.commons.security;
 
 import java.io.ByteArrayOutputStream;
 
-public class Base64 {
+/**
+ * Base64 编码
+ * */
+public class Base64Codec {
+	
 	private static char[] base64EncodeChars = new char[] { 'A', 'B', 'C', 'D',
 			'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
 			'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd',
@@ -20,27 +24,30 @@ public class Base64 {
 			38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1,
 			-1, -1 };
 
+
 	/**
-	 * Base64加密
-	 * 
-	 * @param data 要加密的数据
-	 * @return 编码后的字符串
-	 */
-	public static String encode(byte[] data) {
+	 * @return  返回可在URL上传递的Base64，无需做URLEncode
+	 * */
+	public static String encodeUrlEscaped(byte[] byteData) {
+		return Base64UrlEscape.escape(encode(byteData));
+	}
+	
+	
+	public static String encode(byte[] byteData) {
 		StringBuffer sb = new StringBuffer();
-		int len = data.length;
+		int len = byteData.length;
 		int i = 0;
 		int b1, b2, b3;
 
 		while (i < len) {
-			b1 = data[i++] & 0xff;
+			b1 = byteData[i++] & 0xff;
 			if (i == len) {
 				sb.append(base64EncodeChars[b1 >>> 2]);
 				sb.append(base64EncodeChars[(b1 & 0x3) << 4]);
 				sb.append("==");
 				break;
 			}
-			b2 = data[i++] & 0xff;
+			b2 = byteData[i++] & 0xff;
 			if (i == len) {
 				sb.append(base64EncodeChars[b1 >>> 2]);
 				sb.append(base64EncodeChars[((b1 & 0x03) << 4)
@@ -49,7 +56,7 @@ public class Base64 {
 				sb.append("=");
 				break;
 			}
-			b3 = data[i++] & 0xff;
+			b3 = byteData[i++] & 0xff;
 			sb.append(base64EncodeChars[b1 >>> 2]);
 			sb.append(base64EncodeChars[((b1 & 0x03) << 4)
 					| ((b2 & 0xf0) >>> 4)]);
@@ -59,15 +66,14 @@ public class Base64 {
 		}
 		return sb.toString();
 	}
+	
+	
+	public static byte[] decodeUrlEscaped(String base64Text) {
+		return decode(Base64UrlEscape.unescape(base64Text));
+	}
 
-	/**
-	 * Base64解密
-	 * 
-	 * @param str 要解密的字符串
-	 * @return 解码后的字节数组
-	 */
-	public static byte[] decode(String str) {
-		byte[] data = str.getBytes();
+	public static byte[] decode(String base64Text) {
+		byte[] data = base64Text.getBytes();
 		int len = data.length;
 		ByteArrayOutputStream buf = new ByteArrayOutputStream(len);
 		int i = 0;
@@ -90,7 +96,7 @@ public class Base64 {
 			if (b2 == -1) {
 				break;
 			}
-			buf.write(((b1 << 2) | ((b2 & 0x30) >>> 4)));
+			buf.write((b1 << 2) | ((b2 & 0x30) >>> 4));
 
 			/* b3 */
 			do {
@@ -103,7 +109,7 @@ public class Base64 {
 			if (b3 == -1) {
 				break;
 			}
-			buf.write((((b2 & 0x0f) << 4) | ((b3 & 0x3c) >>> 2)));
+			buf.write(((b2 & 0x0f) << 4) | ((b3 & 0x3c) >>> 2));
 
 			/* b4 */
 			do {
@@ -116,8 +122,10 @@ public class Base64 {
 			if (b4 == -1) {
 				break;
 			}
-			buf.write((((b3 & 0x03) << 6) | b4));
+			buf.write(((b3 & 0x03) << 6) | b4);
 		}
 		return buf.toByteArray();
 	}
+	
+	
 }
