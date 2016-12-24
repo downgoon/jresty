@@ -42,11 +42,6 @@ public final class DynamicProperties {
 	 *  暂不支持从内存到磁盘的数据同步，因此{@link DynamicProperties}不提供set方法，只提供get方法.*/
 	protected Properties property;
 	
-	//TODO 临时
-	public Properties properties() {
-		return property;
-	}
-	
 	
 	/** 动态检测相关参数：第一次检测前的延迟时间，单位ms*/
 	protected long delay;
@@ -57,7 +52,8 @@ public final class DynamicProperties {
 	/** 动态检测相关参数：{@link FileMonitor} 最后检测时间，单位ms*/
 	protected long lastMonitorTime;
 	
-	protected String charset = null;
+	/** 文件编码：ISO 8859-1 和 UTF-8 */
+	protected String charset = "UTF-8";
 	
 	
 	public String getFileName() {
@@ -78,13 +74,6 @@ public final class DynamicProperties {
 	public long getPeriod() {
 		return period;
 	}	
-	
-	public String getCharset() {
-		if(charset==null) {
-			return "ISO 8859-1";
-		}
-		return charset;
-	}
 
 	long getLastMonitorTime() {
 		return this.lastMonitorTime;
@@ -129,10 +118,10 @@ public final class DynamicProperties {
 	public DynamicProperties(File file,long delay,long period)
 	throws IOException
 	{
-		doConstruct(file,delay,period,null);
+		doConstruct(file,delay,period);
 	}
 	
-	private void doConstruct(File file,long delay,long period,String charset) 
+	private void doConstruct(File file,long delay,long period) 
 	throws IOException
 	{
 		if(delay < 0 || period < 0) {
@@ -141,7 +130,6 @@ public final class DynamicProperties {
 		this.file = file;
 		this.delay = delay;		
 		this.period = period;
-		this.charset = charset;
 		this.property = new Properties();
 		this.initAndLoad();//初始构造时，执行第一次加载.
 	}
@@ -152,19 +140,9 @@ public final class DynamicProperties {
 		this(new File(fileName),delay,period);			
 	}
 	
-	public DynamicProperties(String fileName,long delay,long period,String name) 
+	public DynamicProperties(String fileName,long delay,long period,String name)
 	throws IOException
 	{
-		this(fileName,delay,period,name, null);
-	}
-	
-	/** REFER:  http://stackoverflow.com/questions/863838/problem-with-java-properties-utf8-encoding-in-eclipse  */
-	public DynamicProperties(String fileName,long delay,long period,String name, String charset)
-	throws IOException
-	{
-		if(charset!=null && charset.trim().equals("")) {
-			charset = null;
-		}
 		File resourceFile = null;
 		if(fileName!=null && fileName.startsWith("classpath:")) {
 			try {
@@ -182,15 +160,13 @@ public final class DynamicProperties {
 		} else {
 			resourceFile = new File(fileName);
 		}
-		doConstruct(resourceFile,delay,period,charset);
-		if(name==null || name.equals("") || name.equals("default")) {//默认实例
+		doConstruct(resourceFile,delay,period);
+		if(name==null || name.equals("") || name.equals("default")) {
 			if(getInstance(DEFAULT) == null && getInstance("default")==null) {
 				initInstance(DEFAULT,this);
 			} else {
 				throw new IOException("default instance existed");
 			}
-		} else {//其他命名实例
-			initInstance(name,this);
 		}
 	}
 	
@@ -235,18 +211,10 @@ public final class DynamicProperties {
 	 * 线程执行 {@link #update()}方法。因此 {@link #update()}不同担心线程安全的问题.
 	 * */
 	void update() throws IOException {
-		if(charset==null) {
-			InputStream in = new FileInputStream(file);
-			this.property.load(in);
-		} else {
-			this.property.load(new InputStreamReader(new FileInputStream(file), charset));
-		}
-		
-		if(this.property.size() <= 500 ) {
-			log.info("dynamic properties from "+this.file.getAbsolutePath()+" are: "+this.toString());
-		} else {
-			log.info("dynamic properties from "+this.file.getAbsolutePath()+" are too large size: "+this.property.size()+" items");
-		}
+		InputStream in = new FileInputStream(file);
+		// this.property.load(in);
+		this.property.load(new InputStreamReader(in, charset));
+		log.info("dynamic properties from "+this.file.getAbsolutePath()+" are: "+this.toString());
 	}
 	
 	
@@ -258,12 +226,6 @@ public final class DynamicProperties {
 	public String getProperty(String key) {
 		String val = this.property.getProperty(key);
 		return val == null ? null : val.trim();
-	}
-	
-	/** 只要不是NULL，就返回TRUE；如果空字符串，返回TRUE */
-	public boolean has(String key) {
-		String val = this.property.getProperty(key);
-		return val != null;
 	}
 	
 	public boolean getBoolean(String key) {
@@ -284,18 +246,6 @@ public final class DynamicProperties {
 	public int getInt(String key,int defaultValue) {
 		String val = this.getProperty(key);
 		return val == null ? defaultValue : Integer.parseInt(val);
-	}
-	
-	public Byte getByte(String key) {
-		String val = this.getProperty(key);
-		if(val == null) {
-			return null;
-		}
-		try {
-			return Byte.parseByte(val);
-		} catch (NumberFormatException e) {
-			return null;
-		}
 	}
 	
 	public double getDouble(String key) {
@@ -394,25 +344,6 @@ public final class DynamicProperties {
 		}
 		return ref;
 	}
-	
-	public static void main(String[] args) throws Exception {
-		/*
-		<bean name="aidcatMapping" class="io.downgoon.jresty.commons.utils.DynamicProperties">
-		<description>constructor method signature: String fileName,long delay,long period,String name</description>
-		<constructor-arg index="0" value="classpath:aidcat.properties"/>
-		<constructor-arg index="1" value="0"/>
-		<constructor-arg index="2" value="0"/>
-		<constructor-arg index="3" value="aidcat"/>
-		</bean>
-		 * */
-		String fileName = "classpath:aidcat.properties";
-		long delay = 0L;
-		long period = 0L;
-		String name = "aidcat";
-		new DynamicProperties(fileName, delay, period, name);
-		DynamicProperties dp = DynamicProperties.getInstance(name);
-		System.out.println(dp);
-	}
 }
 
 
@@ -442,6 +373,5 @@ class FileMonitor {
 		}, detected.getDelay(), detected.getPeriod());
 		
 	}
-	
 }
 

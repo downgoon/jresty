@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-
 public class UrlUtil {
 
 	
@@ -72,6 +71,7 @@ public class UrlUtil {
 	public final static String appendQS(String urlAddr,String param,String value) {
 		return appendQueryString(urlAddr, param, value);
 	}
+	
 	/**
 	 * 给已有的 urlAddr增加输入参数
 	 * */
@@ -102,6 +102,5 @@ public class UrlUtil {
 	public final static String getNow() {
 		return sdf.format(new Date());
 	}
-
 
 }

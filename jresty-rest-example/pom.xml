@@ -28,7 +28,7 @@
 		<profile>
 			<id>rd</id>
 			<activation>
-				<activeByDefault>false</activeByDefault>
+				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
 				<build.profile>rd</build.profile>
@@ -46,7 +46,7 @@
 		<profile>
 			<id>op</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
 				<build.profile>op</build.profile>

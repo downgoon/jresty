@@ -44,10 +44,11 @@ public class FileLockManager {
 			}
 			// Put it in the Map.
 			exclusiveLock.put(fileName, fileLock);
-		} catch (Exception e) // Bad to catch all but okay to keep this code
-								// short.
+			return true;
 
-		{
+			// Bad to catch all but okay to keep this code short.
+
+		} catch (Exception e) {
 			try {
 				if (channel != null) {
 					channel.close();
@@ -60,10 +61,11 @@ public class FileLockManager {
 			}
 			e.printStackTrace();
 			return false;
+
 		} finally {
 			lock.unlock();
 		}
-		return true;
+
 	}
 
 	public static boolean releaseLock(String lockFile) {

@@ -1,4 +1,4 @@
-package io.downgoon.jresty.commons.utils;
+package io.downgoon.jresty.commons.collection;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
