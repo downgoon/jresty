@@ -4,8 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -97,11 +95,5 @@ public class UrlUtil {
 			return value;
 		}
 	}
-	
-	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-	public final static String getNow() {
-		return sdf.format(new Date());
-	}
-
 
 }
