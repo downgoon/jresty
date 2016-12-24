@@ -7,9 +7,11 @@
 - jresty-data-cache
 - jresty-data-http
 
-- jresty-investigation
-
 - jresty-commons
+
+- jresty-security
+
+
 
 ---
 

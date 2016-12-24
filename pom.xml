@@ -64,9 +64,8 @@
 		<module>jresty-data-cache</module>
 		<module>jresty-rest-example</module>
 		<module>jresty-data-http</module>
-		<module>jresty-investigation</module>
-    <module>jresty-security</module>
-  </modules>
+    	<module>jresty-security</module>
+  	</modules>
 
 	<build>
 		<plugins>
