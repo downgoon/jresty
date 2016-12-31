@@ -85,11 +85,15 @@ public class ConcurrentResourceContainer<T> {
 	}
 	
 	public int size() {
-		return resourceContainer.size();
+		return stuntmanContainer.size();
 	}
 	
 	public Map<String, T> container() {
 		return resourceContainer;
+	}
+	
+	public boolean containsName(String name) {
+		return stuntmanContainer.containsKey(name);
 	}
 
 }
