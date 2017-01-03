@@ -9,7 +9,7 @@
   
   <filter>
     <filter-name>restFilterDispatcher</filter-name>
-    <filter-class>io.downgoon.jresty.rest.struts2.dispatcher.RestFilterDispatcher</filter-class>
+    <filter-class>com.github.downgoon.jresty.rest.struts2.dispatcher.RestFilterDispatcher</filter-class>
     <init-param>
       <param-name>defaultEncoding</param-name>
       <param-value>UTF-8</param-value>

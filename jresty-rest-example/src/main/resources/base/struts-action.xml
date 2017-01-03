@@ -9,9 +9,9 @@
 		
 		<interceptors>
 			<interceptor name="anti-remote-command-method"
-				class="io.downgoon.jresty.rest.struts2.interceptor.AntiRemoteCommandMethodInterceptor" />
+				class="com.github.downgoon.jresty.rest.struts2.interceptor.AntiRemoteCommandMethodInterceptor" />
 			<interceptor name="crossDomainInterceptor" 
-							class="io.downgoon.jresty.rest.struts2.interceptor.CrossDomainInterceptor" />	
+							class="com.github.downgoon.jresty.rest.struts2.interceptor.CrossDomainInterceptor" />	
 				
 			<interceptor-stack name="anti-remote-command-execution">
 				<interceptor-ref name="defaultStack">

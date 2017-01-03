@@ -7,7 +7,7 @@
 		</layout>
 	</appender>
 
-	<logger name="io.downgoon.jresty.data.orm.dao.sql" additivity="false"
+	<logger name="com.github.downgoon.jresty.data.orm.dao.sql" additivity="false"
 		level="debug">
 		<appender-ref ref="stdout" />
 	</logger>

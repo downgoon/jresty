@@ -1,6 +1,6 @@
 package org.example.jresty.action;
 
-import io.downgoon.jresty.rest.struts2.action.UnifiedRestAction;
+import com.github.downgoon.jresty.rest.struts2.action.UnifiedRestAction;
 
 public class PingAction extends UnifiedRestAction {
 

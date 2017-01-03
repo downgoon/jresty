@@ -12,12 +12,12 @@
 
 	<import resource="classpath:applicationContext-jdbc-test.xml" />
 
-	<context:component-scan base-package="io.downgoon.jresty.data.orm.dao.example.**" />
+	<context:component-scan base-package="com.github.downgoon.jresty.data.orm.dao.example.**" />
 
-	<bean id="daoSupport" class="io.downgoon.jresty.data.orm.dao.CRUDDaoSupport" abstract="true">
+	<bean id="daoSupport" class="com.github.downgoon.jresty.data.orm.dao.CRUDDaoSupport" abstract="true">
 		<property name="dataSource" ref="dataSourceH2" />
 	</bean>
 
-	<bean id="materialDao" class="io.downgoon.jresty.data.orm.dao.example.MaterialDaoImpl" parent="daoSupport" />
+	<bean id="materialDao" class="com.github.downgoon.jresty.data.orm.dao.example.MaterialDaoImpl" parent="daoSupport" />
 	
 </beans>

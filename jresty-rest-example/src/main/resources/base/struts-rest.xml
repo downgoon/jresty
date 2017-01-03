@@ -13,7 +13,7 @@
 	<constant name="struts.i18n.reload" value="false" />
 	<constant name="struts.configuration.xml.reload" value="false" />
 	
-	<constant name="struts.mapper.class" value="io.downgoon.jresty.rest.struts2.mapper.RestActionMapper" />
+	<constant name="struts.mapper.class" value="com.github.downgoon.jresty.rest.struts2.mapper.RestActionMapper" />
 	<constant name="struts.action.extension" value="json,,jsonp,xml,html,jsp" />
 	
 </struts>

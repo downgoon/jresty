@@ -4,11 +4,11 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
 	 
 	 <bean name="restAction"
-		class="io.downgoon.jresty.rest.struts2.action.UnifiedRestAction" abstract="true">
+		class="com.github.downgoon.jresty.rest.struts2.action.UnifiedRestAction" abstract="true">
 		<property name="restResultsHandler" ref="restResultsHandler" />
 	</bean>
 	
-	<bean name="restExceptionHandlerAction" scope="prototype" class="io.downgoon.jresty.rest.struts2.action.RestExceptionHandlerAction"
+	<bean name="restExceptionHandlerAction" scope="prototype" class="com.github.downgoon.jresty.rest.struts2.action.RestExceptionHandlerAction"
 		parent="restAction">
 		<property name="defaultExtension" value="json" />
 	</bean>

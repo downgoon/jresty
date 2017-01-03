@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>io.downgoon</groupId>
+		<groupId>com.github.downgoon</groupId>
 		<artifactId>jresty</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
@@ -58,7 +58,7 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>io.downgoon</groupId>
+			<groupId>com.github.downgoon</groupId>
 			<artifactId>jresty-rest</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
