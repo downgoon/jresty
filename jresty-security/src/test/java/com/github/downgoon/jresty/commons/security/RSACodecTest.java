@@ -25,8 +25,8 @@ public class RSACodecTest {
 				privateExponentBigIntHex);
 		RSAKeyPublic rsaKeyPublic = new RSAKeyPublic(modulusBigIntHex, publicExponentBigIntHex);
 
-		rsaCodecPub = new RSACodecPublic(rsaKeyPublic);
-		rsaCodecPri = new RSACodecPrivate(rsaKeyPublic, rsaKeyPrivate);
+		rsaCodecPub = new RSACodecPublic(rsaKeyPublic.toPublicKey());
+		rsaCodecPri = new RSACodecPrivate(rsaKeyPublic.toPublicKey(), rsaKeyPrivate.toPrivateKey());
 	}
 
 	@Before

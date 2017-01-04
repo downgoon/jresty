@@ -6,21 +6,58 @@ import java.io.FileWriter;
 import java.math.BigInteger;
 import java.security.KeyFactory;
 import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.Security;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMReader;
 import org.bouncycastle.openssl.PEMWriter;
 import org.bouncycastle.openssl.PasswordFinder;
 
 /**
  * RSA Key Import/Export ( Converters among different forms )
- * */
+ */
 public class RsaKeyIO {
+
+	static {
+		
+		/**
+		 * key file format ".PEM" not supported in JCE default.
+		 * but BouncyCastleProvider support it. 
+		 * */
+		
+		if (Security.getProvider("BC") == null) {
+			Security.addProvider(new BouncyCastleProvider());
+		}
+	}
+	
+	
+	/**
+	 * 1024 or 512 (flash player noly support 512 )
+	 * http://crypto.hurlant.com/demo/
+	 * */
+	public static KeyPair genKeyPair512() throws Exception {
+		return genKeyPair(512);
+	}
+	
+	public static KeyPair genKeyPair1024() throws Exception {
+		return genKeyPair(1024);
+	}
+	
+	
+	private static KeyPair genKeyPair(int keyLength) throws Exception {
+		KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
+		keyPairGen.initialize(keyLength); 
+		KeyPair keyPair = keyPairGen.generateKeyPair();
+		return keyPair;
+	}
+	
 
 	/**
 	 * import JEC private key from the two big integers in hex string
@@ -76,8 +113,9 @@ public class RsaKeyIO {
 	 *            defined in JCE
 	 * @return new String[] { modulusBigIntHex, publicExponentBigIntHex };
 	 */
-	public static String[] exportPublicToBigint(RSAPublicKey pubKey) {
-		return new String[] { pubKey.getModulus().toString(16), pubKey.getPublicExponent().toString(16) };
+	public static String[] exportPublicToBigint(PublicKey pubKey) {
+		return new String[] { ((RSAPublicKey) pubKey).getModulus().toString(16),
+				((RSAPublicKey) pubKey).getPublicExponent().toString(16) };
 
 	}
 
@@ -88,17 +126,18 @@ public class RsaKeyIO {
 	 *            defined in JCE
 	 * @return new String[] { modulusBigIntHex, privateExponentBigIntHex };
 	 */
-	public static String[] exportPrivateToBigint(RSAPrivateKey priKey) {
-		return new String[] { priKey.getModulus().toString(16), priKey.getPrivateExponent().toString(16) };
+	public static String[] exportPrivateToBigint(PrivateKey priKey) {
+		return new String[] { ((RSAPrivateKey) priKey).getModulus().toString(16),
+				((RSAPrivateKey) priKey).getPrivateExponent().toString(16) };
 	}
 
-	
 	/**
-	 *  import JCE public key from pem file
-	 *  
-	 *  @param	pubFilePem	public key file in pem format
-	 *  @return	JCE Public Key
-	 * */
+	 * import JCE public key from pem file
+	 * 
+	 * @param pubFilePem
+	 *            public key file in pem format
+	 * @return JCE Public Key
+	 */
 	public static PublicKey importPublicFrPem(File pubFilePem) throws Exception {
 		PEMReader pemReader = null;
 		try {
@@ -115,11 +154,10 @@ public class RsaKeyIO {
 		}
 
 	}
-	
-	
+
 	/**
 	 * export JCE public key into pem file
-	 * */
+	 */
 	public static void exportPublicToPem(PublicKey pubKey, String fileName) throws Exception {
 		PEMWriter pemWriter = null;
 		try {
@@ -130,14 +168,14 @@ public class RsaKeyIO {
 			pemWriter.close();
 		}
 	}
-	
-	
+
 	/**
-	 *  import JCE private key from pem file
-	 *  
-	 *  @param	priFilePem	private key file in pem format
-	 *  @return	JCE Private Key
-	 * */
+	 * import JCE private key from pem file
+	 * 
+	 * @param priFilePem
+	 *            private key file in pem format
+	 * @return JCE Private Key
+	 */
 	public static PrivateKey importPrivateFrPem(File priFilePem) throws Exception {
 
 		PEMReader pemReader = null;
@@ -164,11 +202,10 @@ public class RsaKeyIO {
 		}
 
 	}
-	
-	
+
 	/**
 	 * export JCE private key into pem file
-	 * */
+	 */
 	public static void exportPrivateToPem(PrivateKey priKey, String fileName) throws Exception {
 		PEMWriter pemWriter = null;
 		try {
@@ -180,5 +217,4 @@ public class RsaKeyIO {
 		}
 	}
 
-	
 }

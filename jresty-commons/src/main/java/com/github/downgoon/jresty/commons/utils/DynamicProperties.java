@@ -397,15 +397,6 @@ public final class DynamicProperties {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		/*
-		<bean name="aidcatMapping" class="com.sohu.tv.utils.DynamicProperties">
-		<description>constructor method signature: String fileName,long delay,long period,String name</description>
-		<constructor-arg index="0" value="classpath:aidcat.properties"/>
-		<constructor-arg index="1" value="0"/>
-		<constructor-arg index="2" value="0"/>
-		<constructor-arg index="3" value="aidcat"/>
-		</bean>
-		 * */
 		String fileName = "classpath:aidcat.properties";
 		long delay = 0L;
 		long period = 0L;

@@ -1,13 +1,7 @@
 package com.github.downgoon.jresty.commons.security;
 
-import java.math.BigInteger;
-import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
-import java.security.spec.RSAPrivateKeySpec;
-import java.security.spec.RSAPublicKeySpec;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 import javax.crypto.Cipher;
 
@@ -16,71 +10,28 @@ import javax.crypto.Cipher;
  */
 public class RSACodecPrivate extends RSACodecPublic {
 
-	/**
-	 * reference http://en.wikipedia.org/wiki/RSA publicKey :: (n=modulus,
-	 * e=10001 publicExponentHex) privateKey :: (n=modulus, d
-	 * privateExponentHex)
-	 */
-	protected String privateExponentBigIntHex;
+	/** RSA私钥 */
+	protected PrivateKey rsaPriKey;
 
-	public RSACodecPrivate(String modulusBigIntHex, String publicExponentBigIntHex, String privateExponentBigIntHex)
-			throws Exception {
+	public RSACodecPrivate(String modulusBigIntHex, String privateExponentBigIntHex) {
+		super(modulusBigIntHex);
 
+		this.rsaPriKey = new RSAKeyPrivate(modulusBigIntHex, privateExponentBigIntHex).toPrivateKey();
+
+	}
+
+	public RSACodecPrivate(String modulusBigIntHex, String publicExponentBigIntHex, String privateExponentBigIntHex) {
 		super(modulusBigIntHex, publicExponentBigIntHex);
 
-		this.privateExponentBigIntHex = privateExponentBigIntHex;
-
-		int radix = 16;
-		BigInteger n = new BigInteger(this.modulusBigIntHex, radix);
-		BigInteger e = new BigInteger(this.publicExponentBigIntHex, radix);
-		BigInteger d = new BigInteger(this.privateExponentBigIntHex, radix);
-
-		// 1. 生成密钥的表现形式（跟语言无关）
-		RSAPublicKeySpec pubKeySpec = new RSAPublicKeySpec(n, e);
-		RSAPrivateKeySpec priKeySpec = new RSAPrivateKeySpec(n, d);
-
-		// 2. 生成密钥对象（跟语言相关）
-		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-		this.rsaPubKey = (RSAPublicKey) keyFactory.generatePublic(pubKeySpec);
-		this.rsaPriKey = (RSAPrivateKey) keyFactory.generatePrivate(priKeySpec);
+		this.rsaPriKey = new RSAKeyPrivate(modulusBigIntHex, publicExponentBigIntHex, privateExponentBigIntHex)
+				.toPrivateKey();
 	}
 
-	public RSACodecPrivate(RSAKeyPublic rsaKeyPublic, RSAKeyPrivate rsaKeyPrivate) throws Exception {
-		this(rsaKeyPrivate.getModulusBigIntHex(), rsaKeyPublic.getPublicExponentBigIntHex(),
-				rsaKeyPrivate.getPrivateExponentBigIntHex());
-	}
-
-	/** RSA私钥 */
-	protected RSAPrivateKey rsaPriKey;
-
-	public RSACodecPrivate(RSAPublicKey rsaPubKey, RSAPrivateKey rsaPriKey) {
+	public RSACodecPrivate(PublicKey rsaPubKey, PrivateKey rsaPriKey) {
 		super(rsaPubKey);
-
 		this.rsaPriKey = rsaPriKey;
-		this.privateExponentBigIntHex = rsaPriKey.getPrivateExponent().toString(16);
 	}
 
-	/**
-	 * M1: 生成密钥对
-	 */
-	public static RSACodecPrivate generateKeyPairs() throws Exception {
-		final int keyLength = 512;
-		KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
-		keyPairGen.initialize(keyLength);// 1024 or 512 (flash player noly
-											// support
-											// 512)//http://crypto.hurlant.com/demo/
-		KeyPair keyPair = keyPairGen.generateKeyPair();
-
-		// 公钥
-		RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-
-		// 私钥
-		RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-
-		RSACodecPrivate coder = new RSACodecPrivate(publicKey, privateKey);
-		// 计算输出KEY
-		return coder;
-	}
 
 	/**
 	 * 应用场景：数据加密/解密，在加密/解密领域是公钥加密，私钥解密。 私钥解密方法
@@ -117,14 +68,6 @@ public class RSACodecPrivate extends RSACodecPublic {
 	 */
 	public byte[] encryptByPrivate(byte[] plainBytes) throws Exception {
 		return signByPrivate(plainBytes);
-	}
-
-	public RSAPrivateKey getRsaPriKey() {
-		return rsaPriKey;
-	}
-
-	public String getPrivateExponentBigIntHex() {
-		return privateExponentBigIntHex;
 	}
 
 }
