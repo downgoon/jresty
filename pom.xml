@@ -70,18 +70,33 @@
   	<!-- deploy to remote (uploader password stored in settings.xml)-->
   	<distributionManagement>
           <snapshotRepository>
-               <id>snapshots</id>
+               <id>ffan-snapshots</id>
                <name>Nexus Snapshot Repository</name>
                <url>http://maven.intra.ffan.com/nexus/content/repositories/snapshots/</url>
           </snapshotRepository>
           <repository>
-               <id>releases</id>
+               <id>ffan-releases</id>
                <name>Nexus Release Repository</name>
                <url>http://maven.intra.ffan.com/nexus/content/repositories/releases/</url>
           </repository>
      </distributionManagement>
-  	
+     
+     <!-- 
+     <distributionManagement>
+        <snapshotRepository>
+            <id>oss-snapshots</id>
+            <name>Central Public Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
 
+        <repository>
+            <id>oss-releases</id>
+            <name>Central Public Releases</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+    </distributionManagement>
+	 -->
+	
 	<build>
 		<plugins>
 			<plugin>
