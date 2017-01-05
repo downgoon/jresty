@@ -7,7 +7,7 @@ import org.apache.struts2.dispatcher.Dispatcher;
 import org.apache.struts2.dispatcher.mapper.ActionMapper;
 import org.apache.struts2.dispatcher.mapper.ActionMapping;
 
-public class RestTestCase extends StrutsSpringTestCase {
+public abstract class RestTestCase extends StrutsSpringTestCase {
 	
 	/**
      * Finds an ActionMapping for a given request
