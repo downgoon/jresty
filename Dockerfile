@@ -22,6 +22,7 @@ EXPOSE 8080
 
 COPY . ~/java
 WORKDIR ~/java
+COPY ./settings.xml ~/.m2/
     
 RUN mvn package && cp -rf ~/java/jresty-rest-example/target/jresty-rest-example-*.war $TOMCAT_ROOT
 ENTRYPOINT /etc/init.d/tomcat7 start

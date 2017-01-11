@@ -95,6 +95,25 @@ a tranditional but rapid development RESTful API framework based on Struts2 and 
 			</distributionManagement>
 		</profile>
 
+		<profile>
+			<id>mysite</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<distributionManagement>
+				<snapshotRepository>
+					<id>mysiterh</id>
+					<name>Nexus Snapshot Repository</name>
+					<url>http://maven.intra.mysite.com/nexus/content/repositories/snapshots/</url>
+				</snapshotRepository>
+				<repository>
+					<id>mysiterh</id>
+					<name>Nexus Release Repository</name>
+					<url>http://maven.intra.mysite.com/nexus/content/repositories/releases/</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+
 	</profiles>
 
 
