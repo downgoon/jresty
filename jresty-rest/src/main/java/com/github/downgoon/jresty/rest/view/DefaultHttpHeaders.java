@@ -95,10 +95,8 @@ public class DefaultHttpHeaders implements HttpHeaders {
     }
     
     private LinkedHashMap<String,List<String>> httpHeaders = new LinkedHashMap<String,List<String>>();
-    /** 
-     * @author liwei
-     * @since	2010-7-8
-     * */
+    
+    
     public DefaultHttpHeaders addHeader(String name,String value) {
     	List<String> valueList = httpHeaders.get(name);
     	if(valueList==null) {
@@ -110,9 +108,6 @@ public class DefaultHttpHeaders implements HttpHeaders {
     }
     
     
-    /* (non-Javadoc)
-     * @see org.apache.struts2.rest.HttpHeaders#apply(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object)
-     */
     @Override
 	public String apply(HttpServletRequest request, HttpServletResponse response, Object target) {
     	
