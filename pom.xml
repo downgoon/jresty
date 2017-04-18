@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.downgoon</groupId>
 	<artifactId>jresty</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>jresty</name>
 	<description>
@@ -22,7 +22,7 @@ a tranditional but rapid development RESTful API framework based on Struts2 and 
 		<connection>scm:git:git@github.com:downgoon/jresty.git</connection>
 		<developerConnection>scm:git:git@github.com:downgoon/jresty.git</developerConnection>
 		<url>http://github.com/downgoon/jresty</url>
-		<tag>jresty-0.0.1</tag>
+		<tag>jresty-0.0.2-SNAPSHOT</tag>
 	</scm>
 
 	<developers>
