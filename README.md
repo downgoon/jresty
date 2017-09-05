@@ -17,6 +17,8 @@
 
 # jresty-rest-example
 
+[hello-world-jresty](https://github.com/downgoon/hello-world-jresty): a quick start example
+
 ## how to run
 
 - **run in eclipse**
